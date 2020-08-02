@@ -98,17 +98,15 @@ def create_app(test_config=None):
   def edit_actor(payload, actor_id):
     body = request.get_json()
     if body is None:
-      abort(422)
-    
+      abort(422)    
+    edit_actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
     if edit_actor is None:
       abort(404)
     try:
       # if there's no new input, remain the same
-      edit_actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
       new_name = body.get('name', edit_actor.name)
       new_age = body.get('age', edit_actor.age)
       new_gender = body.get('gender', edit_actor.gender)
-
       # set the updated value
       edit_actor.name = new_name
       edit_actor.age = new_age
