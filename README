@@ -1,7 +1,13 @@
 # Full Stack Casting Agency API
 
 ## Project Content
-This is the project is the Udacity capstone project. Dealing with a casting agency with 
+This is the project is the Udacity capstone project. Dealing with a casting agency with RBAC authentication API design.
+Cover topics inclue
+1. Database design with ```postgres``` and ```sqlalchemy```
+2. API design using ```Flask``` framework
+3. Test script design
+4. Authentication for roles via ```Auth0```
+5. Deployment on ```Heroku```
 
 ## Getting Started
 
@@ -56,12 +62,17 @@ Setting the `FLASK_ENV` variable to `development` will detect file changes and r
 Setting the `FLASK_APP` variable to `app.py` directs flask to use the `app.py` file to find the application. 
 
 
-## Endpoints Reference
+## API Documentation
 
-GET '/actors'
-- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+
+### Base URL
+
+### Actors
+GET ```/actors```
+- Fetches a list of actors in which contains in the database.
 - Request Arguments: None
-- Returns: An object with a single key, actors, that contains an object of id, category_string key:value pairs.
+- Permission: ```get:actors```
+- Returns: An object with a single key, actors, that contains an object of id, name, age, gender.
 - METHOD URL: ``` curl http://127.0.0.1:5000/categories ```
 - Sample: 
 ```bash
@@ -80,221 +91,73 @@ GET '/actors'
 
 ```
 
-GET '/questions'
-- Fetches a list of questions that contains in the database
-- The list includes 'answer', 'category', 'difficulty', 'id', and 'question' itself.
-- Return an object that inclues categories, current_categories, questions, status, total_questions.
-- METHOD URL: ``` curl http://127.0.0.1:5000/questions ```
-- Sample:
-```bash
-{
-  "categories": {
-    "1": "Science",
-    "2": "Art",
-    "3": "Geography",
-    "4": "History",
-    "5": "Entertainment",
-    "6": "Sports"
-  },
-  "current_categories": null,
-  "questions": [
-    {
-      "answer": "Apollo 13",
-      "category": 5,
-      "difficulty": 4,
-      "id": 2,
-      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-    },
-    {
-      "answer": "Tom Cruise",
-      "category": 5,
-      "difficulty": 4,
-      "id": 4,
-      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-    },
-    {
-      "answer": "Muhammad Ali",
-      "category": 4,
-      "difficulty": 1,
-      "id": 9,
-      "question": "What boxer's original name is Cassius Clay?"
-    },
-    {
-      "answer": "Brazil",
-      "category": 6,
-      "difficulty": 3,
-      "id": 10,
-      "question": "Which is the only team to play in every soccer World Cup tournament?"
-    },
-    {
-      "answer": "Uruguay",
-      "category": 6,
-      "difficulty": 4,
-      "id": 11,
-      "question": "Which country won the first ever soccer World Cup in 1930?"
-    },
-    {
-      "answer": "George Washington Carver",
-      "category": 4,
-      "difficulty": 2,
-      "id": 12,
-      "question": "Who invented Peanut Butter?"
-    },
-    {
-      "answer": "The Palace of Versailles",
-      "category": 3,
-      "difficulty": 3,
-      "id": 14,
-      "question": "In which royal palace would you find the Hall of Mirrors?"
-    },
-    {
-      "answer": "Agra",
-      "category": 3,
-      "difficulty": 2,
-      "id": 15,
-      "question": "The Taj Mahal is located in which Indian city?"
-    },
-    {
-      "answer": "Escher",
-      "category": 2,
-      "difficulty": 1,
-      "id": 16,
-      "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
-    },
-    {
-      "answer": "Mona Lisa",
-      "category": 2,
-      "difficulty": 3,
-      "id": 17,
-      "question": "La Giaconda is better known as what?"
-    }
-  ],
-  "success": true,
-  "total_question": 32
-}
-```
-
-DELETE '/questions/<int:question_id>'
-- Delete question by providing question id
-- reutrn status of delete and deleted question id
-- METHOD URL: ``` curl http://127.0.0.1:5000/questions/13 -X DELETE ```
-- Sample:
-```bash
-{
-    'deleted': 13,
-    'success': True
-}
-```
-
-POST '/questions'
-- Post method to post new question to the database
-- Arguments: question, answer, category, difficulty.
+POST ```/actors```
+- Post method to post new actor to the database
+- Arguments: name, gender, age.
+- Permission: ```post:actors```
 - METHOD URL: ``` curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{ "question": "Who is the first asian american nba player won the champion?", "answer": "Jeremy Lin", "difficulty": 2, "category": "6" }'  ```
 - Sample:
 ```bash
-{
-  "created": 42,
-  "questions": [
-    {
-      "answer": "Jeremy Lin",
-      "category": 6,
-      "difficulty": 2,
-      "id": 42,
-      "question": "Who is the first asian american nba player won the champion?"
-    }
-  ],
-  "success": true,
-  "total_questions": 32
-}
+
 ```
 
-POST '/questions/search'
-- Post a search string in the questions.
-- Return any questions for whom search term is a substring of the question
+UPDATE ```/actors/<int:actor_id>```
+- Update the current actor information in the database.
+- Arguments: actor_id, new name/gender/age. If not specified with any of the content, it will remain the same.
+- Permission: ```patch:actors```
+- METHOD URL: ``` ```
+- Sample:
+```bash
+```
+
+DELETE ```/actors/<int:actor_id>```
+- Delete actor by providing actor id
+- reutrn status of delete and deleted actor id
+- METHOD URL: ``` curl http://127.0.0.1:5000/questions/13 -X DELETE ```
+- Sample:
+```bash
+
+```
+
+### Movies
+
+GET ```/movies```
+- Fetches a list of movies that contains in the database
+- Return an object that inclues title, release date.
+- Permission: ```get:movies```
+- METHOD URL: ``` curl http://127.0.0.1:5000/questions ```
+- Sample:
+```bash
+
+```
+
+POST ```/movies```
+- Post a new movie to the database.
+- Arguments: title, release_date
+- Permission: ```post:movies```
 - METHOD URL: ``` curl http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: application/json" -d '{"searchTerm": "who"}' ```
 - Sample:
 ```bash
-{
-  "questions": [
-    {
-      "answer": "George Washington Carver",
-      "category": 4,
-      "difficulty": 2,
-      "id": 12,
-      "question": "Who invented Peanut Butter?"
-    },
-    {
-      "answer": "Alexander Fleming",
-      "category": 1,
-      "difficulty": 3,
-      "id": 21,
-      "question": "Who discovered penicillin?"
-    },
-    {
-      "answer": "Jeremy Lin",
-      "category": 6,
-      "difficulty": 2,
-      "id": 42,
-      "question": "Who is the first asian american nba player won the champion?"
-    }
-  ],
-  "success": true,
-  "total_questions": 3
-}
+
 ```
 
-GET '/categories/<int:category_id>/questions'
-- Get questions from specific category
+UPDATE ```/movies/<int:movie_id>```
+- Update the movie info in the current database.
+- Arguments: Must provide a valid movie id to update. new title, new release date should be provided; otherwise, the info will remain the same.
 - METHOD URL: ``` curl http://127.0.0.1:5000/categories/6/questions ```
 - Sample:
 ``` bash
-{
-  "category": 6,
-  "questions": [
-    {
-      "answer": "Brazil",
-      "category": 6,
-      "difficulty": 3,
-      "id": 10,
-      "question": "Which is the only team to play in every soccer World Cup tournament?"
-    },
-    {
-      "answer": "Uruguay",
-      "category": 6,
-      "difficulty": 4,
-      "id": 11,
-      "question": "Which country won the first ever soccer World Cup in 1930?"
-    },
-    {
-      "answer": "Jeremy Lin",
-      "category": 6,
-      "difficulty": 2,
-      "id": 42,
-      "question": "Who is the first asian american nba player won the champion?"
-    }
-  ],
-  "success": true,
-  "total_questions": 3
-}
+
 ```
 
-POST '/quizzes'
-- Post randomly from categories.
-- Able to select all the categories or a specific one.
-- The questions from the category will jump up randomly but without previous shown ones.
+DELETE ```/movies/<int:movie_id>```
+- Remove movie from database.
+- Arguments: movie_id.
+- Permission: ```delete:movies```.
 - METHOD URL: ``` curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions": [42], "quiz_category": {"type": "Sports", "id": "6"}}' ```
 - Sample:
 ``` bash
-{
-  "question": {
-    "answer": "Brazil",
-    "category": 6,
-    "difficulty": 3,
-    "id": 10,
-    "question": "Which is the only team to play in every soccer World Cup tournament?"
-  },
-  "success": true
-}
+
 ```
 
 ## Error handling
@@ -307,6 +170,7 @@ Not found error (404)
 "message": "not found",
 "success": false
 }
+
 ```
 Unprocessable error (422)
 ```bash
@@ -317,15 +181,49 @@ Unprocessable error (422)
 }
 ```
 
+Authentication error(401)
+```bash
+{
+  'success': False,
+  'error': 401,
+  'message': 'Authorization header is expected.'
+}
+```
+Permission not found(403)
+```bash
+{
+  'success': False,
+  'error': 403,
+  'message': 'Permission not found.
+}
+```
+
+## Authentication setup
+1. Create account in Auth0.
+2. Create Application in the service.
+3. Select Regular Web Application.
+4. Create API by clicking API Tab.
+5. Enable RBAC in the API.
+6. Create new Role.
+7. Create and assign permissions.
+
 ## Testing
 To run the tests, run
 ```
-dropdb trivia_test
-createdb trivia_test
-psql trivia_test < trivia.psql
-python3 test_flaskr.py
+python test_app.py
 ```
 
+Sample
+```
+.........................
+----------------------------------------------------------------------
+Ran 25 tests in 9.642s
+
+OK
+```
+PS. The test_app.py file include function that drop database and create a new test database each time it runs. I will flush fresh data to test.
+
 ## Authors
-Jeffrey Lee is in charged of backend Web Api in (__init__.py) and (test_flask.py) files. Also the README in the backend.
+Jeffrey Lee is in charged of backend Web Api in (app.py) (auth.py) and (test_app.py) . Also the README in the backend.
+Authentication service is provided by third party Auth0
 All other files are contributed by Udacity- Full Stack Web Developer Nanodegree.
