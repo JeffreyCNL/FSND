@@ -5,7 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 
 database_name = "casting_agency"
-database_path = 'postgresql:///casting_agency'
+# database_path = 'postgresql:///casting_agency'
+database_path = 'postgres://postgres:test123@localhost:5432/casting_agency'
 
 # database_name = "cast_agency_test"
 # database_path = 'postgresql:///cast_agency_test'
