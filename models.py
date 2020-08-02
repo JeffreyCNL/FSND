@@ -6,7 +6,8 @@ import json
 
 database_name = "casting_agency"
 # database_path = 'postgresql:///casting_agency'
-database_path = 'postgres://postgres:test123@localhost:5432/casting_agency'
+# database_path = 'postgres://postgres:test123@localhost:5432/casting_agency'
+database_path = 'postgres://axhrvngbcvlvhu:786868c621a6ec24d2e7a317b0804666001586c9a3e13a6b02aab6aa7c13a6fc@ec2-34-225-82-212.compute-1.amazonaws.com:5432/d60ldojt0bfquf'
 
 # database_name = "cast_agency_test"
 # database_path = 'postgresql:///cast_agency_test'
