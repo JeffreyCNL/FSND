@@ -63,9 +63,17 @@ Setting the `FLASK_APP` variable to `app.py` directs flask to use the `app.py` f
 
 
 ## API Documentation
-
+You can run it locally with flask run just like descibe above.
+Or can get the data from deplied heroku app.
+To utilize curl and heroku app with authentication, 
+```
+TOKEN=<bearer token>
+```
+You can find the token in config.py file.
 
 ### Base URL
+https://jeffrey-casting-agency.herokuapp.com/
+
 
 ### Actors
 GET ```/actors```
@@ -73,20 +81,20 @@ GET ```/actors```
 - Request Arguments: None
 - Permission: ```get:actors```
 - Returns: An object with a single key, actors, that contains an object of id, name, age, gender.
-- METHOD URL: ``` curl http://127.0.0.1:5000/categories ```
+- METHOD URL: ``` curl -X GET -H "Authorization:Bearer ${TOKEN}" "https://jeffrey-casting-agency.herokuapp.com/actors" ```
 - Sample: 
 ```bash
 {
-    "categories": {
-        "1": "Science",
-        "2": "Art",
-        "3": "Geography",
-        "4": "History",
-        "5": "Entertainment",
-        "6": "Sports"
-    },
-    "success": true,
-    "total_category": 6
+  "actors": [
+    {
+      "Age": 20,
+      "Gender": "Male",
+      "Id": 2,
+      "Name": "Jeffrey"
+    }
+  ],
+  "success": true,
+  "total_actors": 1
 }
 
 ```
@@ -95,28 +103,48 @@ POST ```/actors```
 - Post method to post new actor to the database
 - Arguments: name, gender, age.
 - Permission: ```post:actors```
-- METHOD URL: ``` curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{ "question": "Who is the first asian american nba player won the champion?", "answer": "Jeremy Lin", "difficulty": 2, "category": "6" }'  ```
+- METHOD URL: ``` curl -X POST -H "Authorization:Bearer ${TOKEN}" -H "Content-Type: application/json" -d '{"name":"Ryan", "age":34, "gender":"Male"}' "https://jeffrey-casting-agency.herokuapp.com/actors"  ```
 - Sample:
 ```bash
-
+{
+  "actors": [
+    {
+      "Age": 34,
+      "Gender": "Male",
+      "Id": 3,
+      "Name": "Ryan"
+    }
+  ],
+  "created": 3,
+  "success": true,
+  "total_actors": 2
+}
 ```
 
 UPDATE ```/actors/<int:actor_id>```
 - Update the current actor information in the database.
 - Arguments: actor_id, new name/gender/age. If not specified with any of the content, it will remain the same.
 - Permission: ```patch:actors```
-- METHOD URL: ``` ```
+- METHOD URL: ```curl -X PATCH -H "Authorization:Bearer ${TOKEN}" -H "Content-Type: application/json" -d '{"age":22}' "https://jeffrey-casting-agency.herokuapp.com/actors/2" ```
 - Sample:
 ```bash
+{
+  "edit_actor": 2,
+  "success": true,
+  "total_actors": 2
+}
 ```
 
 DELETE ```/actors/<int:actor_id>```
 - Delete actor by providing actor id
 - reutrn status of delete and deleted actor id
-- METHOD URL: ``` curl http://127.0.0.1:5000/questions/13 -X DELETE ```
+- METHOD URL: ```  curl -X DELETE -H "Authorization:Bearer ${TOKEN}" "https://jeffrey-casting-agency.herokuapp.com/actors/1" ```
 - Sample:
 ```bash
-
+{
+  "deleted": 1,
+  "success": true
+}
 ```
 
 ### Movies
@@ -125,39 +153,72 @@ GET ```/movies```
 - Fetches a list of movies that contains in the database
 - Return an object that inclues title, release date.
 - Permission: ```get:movies```
-- METHOD URL: ``` curl http://127.0.0.1:5000/questions ```
+- METHOD URL: ``` curl -X GET -H "Authorization:Bearer ${TOKEN}" "https://jeffrey-casting-agency.herokuapp.com/movies" ```
 - Sample:
 ```bash
-
+{
+  "movies": [
+    {
+      "Id": 1,
+      "Release Date": "Fri, 24 Oct 2014 00:00:00 GMT",
+      "Title": "John Wick"
+    },
+    {
+      "Id": 2,
+      "Release Date": "Fri, 24 Oct 2014 00:00:00 GMT",
+      "Title": "John Wick"
+    }
+  ],
+  "success": true,
+  "total_movies": 2
+}
 ```
 
 POST ```/movies```
 - Post a new movie to the database.
 - Arguments: title, release_date
 - Permission: ```post:movies```
-- METHOD URL: ``` curl http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: application/json" -d '{"searchTerm": "who"}' ```
+- METHOD URL: ``` curl -X POST -H "Authorization:Bearer ${TOKEN}" -H "Content-Type: application/json" -d '{"title":"John Wick 2", "release_date":"2017-2-10"}' "https://jeffrey-casting-agency.herokuapp.com/movies" ```
 - Sample:
 ```bash
-
+{
+  "created": 3,
+  "movies": [
+    {
+      "Id": 3,
+      "Release Date": "Fri, 10 Feb 2017 00:00:00 GMT",
+      "Title": "John Wick 2"
+    }
+  ],
+  "success": true,
+  "total_movies": 2
+}
 ```
 
 UPDATE ```/movies/<int:movie_id>```
 - Update the movie info in the current database.
 - Arguments: Must provide a valid movie id to update. new title, new release date should be provided; otherwise, the info will remain the same.
-- METHOD URL: ``` curl http://127.0.0.1:5000/categories/6/questions ```
+- METHOD URL: ``` curl -X PATCH -H "Authorization:Bearer ${TOKEN}" -H "Content-Type: application/json" -d '{"title":"John Wick 3", "release_date":"2019-7-10"}' "https://jeffrey-casting-agency.herokuapp.com/movies/1" ```
 - Sample:
 ``` bash
-
+{
+  "edit_movie": 1,
+  "success": true,
+  "total_movies": 2
+}
 ```
 
 DELETE ```/movies/<int:movie_id>```
 - Remove movie from database.
 - Arguments: movie_id.
 - Permission: ```delete:movies```.
-- METHOD URL: ``` curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions": [42], "quiz_category": {"type": "Sports", "id": "6"}}' ```
+- METHOD URL: ``` curl -X DELETE -H "Authorization:Bearer ${TOKEN}" "https://jeffrey-casting-agency.herokuapp.com/movies/2" ```
 - Sample:
 ``` bash
-
+{
+  "deleted": 2,
+  "success": true
+}
 ```
 
 ## Error handling
